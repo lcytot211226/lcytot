@@ -1,6 +1,33 @@
 "use client";
 
 import { useLang } from "@/context/lang-context";
+import { GITHUB_URL } from "@/lib/links";
+import PrintableResume from "./_components/PrintableResume";
+
+function GitHubIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden="true">
+      <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.15-1.11-1.46-1.11-1.46-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.66.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
+    </svg>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+      aria-hidden="true"
+    >
+      <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
+    </svg>
+  );
+}
 
 function MailIcon() {
   return (
@@ -105,7 +132,7 @@ export default function ProfilePage() {
   const { profile } = dict;
 
   return (
-    <main className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
+    <main className="flex flex-1 flex-col">
       {/* Header */}
       <section className="relative overflow-hidden border-b border-zinc-900/10 bg-white dark:border-white/10 dark:bg-zinc-900">
         <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 animate-float rounded-full bg-gradient-to-br from-indigo-400/30 to-fuchsia-400/30 blur-3xl" />
@@ -115,9 +142,6 @@ export default function ProfilePage() {
         />
 
         <div className="relative mx-auto flex max-w-3xl animate-fade-in-up flex-col gap-4 px-4 py-12 sm:px-6 sm:py-16">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-2xl font-bold text-white shadow-lg shadow-indigo-500/30 ring-4 ring-white transition-transform duration-300 hover:scale-105 hover:rotate-3 dark:ring-zinc-900">
-            {profile.name.charAt(0)}
-          </div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-white">
               {profile.name}
@@ -138,12 +162,12 @@ export default function ProfilePage() {
               <MailIcon /> {profile.email}
             </a>
             <a
-              href="/resume.pdf"
+              href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-fuchsia-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-indigo-500/30"
+              className="inline-flex items-center gap-1.5 rounded-full border border-zinc-900/10 px-3 py-1.5 text-sm text-zinc-700 transition-all hover:-translate-y-0.5 hover:bg-zinc-900/5 hover:shadow-sm dark:border-white/10 dark:text-zinc-300 dark:hover:bg-white/10"
             >
-              {profile.resumeDownload}
+              <GitHubIcon /> GitHub
             </a>
           </div>
         </div>
@@ -278,7 +302,22 @@ export default function ProfilePage() {
             ))}
           </ul>
         </section>
+
+        {/* Download resume — prints the white PDF version built from this page */}
+        <section className="mt-12 flex flex-col items-start gap-2 border-t border-zinc-900/10 pt-8 dark:border-white/10">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-1.5 rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-zinc-700 hover:shadow-md dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            <DownloadIcon />
+            {profile.resumeDownload}
+          </button>
+          <p className="text-xs text-zinc-500">{profile.resumeHint}</p>
+        </section>
       </div>
+
+      <PrintableResume profile={profile} />
     </main>
   );
 }

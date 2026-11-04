@@ -1,23 +1,38 @@
+// Single source of truth for every project shown on "/".
+// Public projects get a route at app/<slug>/page.tsx (redirecting to the live app);
+// private ones have no public URL. Text lives under `projects.<key>` in lib/dictionaries.ts.
+export type ProjectKey = "accounting" | "motoLicense" | "deployPlatform";
+
 export type Project = {
-  slug: string;
-  titleKey: string;
-  descriptionKey: string;
-  icon: string;
+  key: ProjectKey;
+  slug?: string; // public route; omit for private projects
+  image?: string; // app icon in /public; omit to use the generic server icon
+  tech: string[];
+  github?: string;
 };
 
-// Single source of truth for every project mounted under "/".
-// Add an entry here whenever a new app/<slug>/page.tsx route is created.
 export const projects: Project[] = [
   {
-    slug: "profile",
-    titleKey: "projects.profile.title",
-    descriptionKey: "projects.profile.description",
-    icon: "👤",
+    key: "accounting",
+    slug: "accounting",
+    image: "/projects/accounting.png",
+    tech: ["Next.js", "MongoDB"],
+    github: "https://github.com/lcytot211226/subanote",
   },
   {
-    slug: "accounting",
-    titleKey: "projects.accounting.title",
-    descriptionKey: "projects.accounting.description",
-    icon: "💰",
-  }
+    key: "motoLicense",
+    slug: "moto-license",
+    image: "/projects/moto-license.png",
+    tech: ["Python", "HTML", "MongoDB", "Web Push"],
+    github: "https://github.com/lcytot211226/taiwan-scooter-license-notifier",
+  },
 ];
+
+export const privateProjects: Project[] = [
+  {
+    key: "deployPlatform",
+    tech: ["Mac mini", "Cloudflare Tunnel", "PM2", "GitHub", "Discord"],
+  },
+];
+
+export const SITE_REPO_URL = "https://github.com/lcytot211226/lcytot";

@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    // Standalone static HTML projects served from /public under a clean URL.
+    return [{ source: "/piyan", destination: "/piyan.html" }];
+  },
 };
 
 export default nextConfig;
